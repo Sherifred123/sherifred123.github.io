@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S. Sherifred Singh · Embedded Firmware Engineer | Bare-Metal C, PIC18, STM32, RTOS</title>
+<meta name="description" content="Personal Developer Portfolio of S. Sherifred Singh, Embedded Firmware Engineer with 6.5+ years industry experience (4.5+ yrs in low-level Embedded C & 2 yrs in PCB hardware validation). Specialized in PIC18, STM32, bare-metal drivers, and industrial automation.">
+<meta name="keywords" content="Embedded Firmware Engineer, Embedded C, PIC18, STM32, ESP32, Bare-Metal Drivers, Hardware Debugging, UART, SPI, I2C, FreeRTOS, Coimbatore, Notice Period 15 Days">
+<meta name="author" content="S. Sherifred Singh">
+<link rel="canonical" href="https://github.com/Sherifred123">
+
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="S. Sherifred Singh · Embedded Firmware Engineer">
+<meta property="og:description" content="6.5+ Years Experience | Embedded C, PIC18, STM32, Industrial Telemetry & Bare-Metal Architecture. Available in 15–30 Days.">
+<meta property="og:url" content="https://github.com/Sherifred123">
+
+<!-- Distinct Fonts: Outfit for Tech Headings + JetBrains Mono for Code -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  // Instant Theme Initialization (Prevents Screen Flash)
+  (function(){
+    try {
+      var saved = localStorage.getItem('ss-theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    } catch(e){}
+  })();
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+/* Custom Variables - Distinct Cybernetic Silicon Palette */
+:root{
+  --bg: #07090e;
+  --bg-subtle: #0d111a;
+  --surface: rgba(18, 24, 38, 0.7);
+  --surface-hover: rgba(28, 36, 56, 0.85);
+  --surface-solid: #111625;
+  --border: rgba(56, 189, 248, 0.12);
+  --border-strong: rgba(56, 189, 248, 0.28);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --primary: #38bdf8;
+  --primary-glow: rgba(56, 189, 248, 0.35);
+  --accent: #10b981;
+  --accent-glow: rgba(16, 185, 129, 0.35);
+  --amber: #f59e0b;
+  --violet: #a855f7;
+  --rose: #f43f5e;
+  --grad-hero: linear-gradient(135deg, #38bdf8 0%, #10b981 50%, #a855f7 100%);
+  --grad-card: linear-gradient(145deg, rgba(56, 189, 248, 0.06), rgba(16, 185, 129, 0.03));
+  --shadow-hud: 0 20px 50px -15px rgba(0, 0, 0, 0.8), 0 0 30px -10px var(--primary-glow);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
+
+:root[data-theme="light"]{
+  --bg: #f8fafc;
+  --bg-subtle: #edf2f7;
+  --surface: rgba(255, 255, 255, 0.85);
+  --surface-hover: rgba(255, 255, 255, 0.98);
+  --surface-solid: #ffffff;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(2, 132, 199, 0.3);
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+  --primary: #0284c7;
+  --primary-glow: rgba(2, 132, 199, 0.2);
+  --accent: #059669;
+  --accent-glow: rgba(5, 150, 105, 0.2);
+  --amber: #d97706;
+  --violet: #7e22ce;
+  --rose: #e11d48;
+  --grad-hero: linear-gradient(135deg, #0284c7 0%, #059669 50%, #7e22ce 100%);
+  --grad-card: linear-gradient(145deg, rgba(2, 132, 199, 0.04), rgba(5, 150, 105, 0.02));
+  --shadow-hud: 0 16px 40px -15px rgba(15, 23, 42, 0.12);
+}
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: background 0.35s ease, color 0.35s ease;
+  position: relative;
+}
+
+/* Background Ambient Lighting Grid */
+.bg-grid{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 900px;
+  background-image: 
+    radial-gradient(circle at 50% 10%, var(--primary-glow) 0%, transparent 60%),
+    radial-gradient(circle at 85% 25%, var(--accent-glow) 0%, transparent 50%),
+    linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Typography Utilities */
+h1,h2,h3,h4,h5,h6{font-family:'Outfit',sans-serif;font-weight:800;color:var(--text);margin:0;letter-spacing:-0.025em}
+.mono{font-family:'JetBrains Mono',monospace}
+.grad-text{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+a{color:inherit;text-decoration:none}
+img,svg{display:block}
+button,input,textarea{font:inherit;color:inherit}
+button{background:none;border:none;cursor:pointer}
+ul{margin:0;padding:0;list-style:none}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+
+/* Layout Containers */
+.wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 clamp(18px,5vw,70px);position:relative;z-index:1}
+.section{position:relative;padding:clamp(60px,8vh,110px) 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid var(--border-strong);background:var(--surface);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);box-shadow:0 0 15px -3px var(--primary-glow)}
+.eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary);animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.25)}}
+
+.h2{font-size:clamp(28px,3.8vw,44px);line-height:1.2;margin-top:14px}
+.lead{font-size:clamp(15px,1.35vw,17.5px);line-height:1.75;color:var(--text-muted)}
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:clamp(36px,5vw,52px);max-width:760px}
+
+/* Scroll Progress Bar */
+.scroll-progress-bar{position:absolute;bottom:0;left:0;height:2.5px;width:100%;background:var(--grad-hero);transform-origin:left;transform:scaleX(0);transition:transform 0.08s linear;z-index:130}
+
+/* HUD Glassmorphism Cards & Spotlight Micro-Interaction */
+.hud-card{
+  border-radius:var(--radius-lg);
+  border:1px solid var(--border);
+  background:var(--surface);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  transition:border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.hud-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(56, 189, 248, 0.1), transparent 40%);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.35s ease;
+}
+.hud-card:hover::before{
+  opacity:1;
+}
+.hud-card.lift:hover{
+  border-color:var(--border-strong);
+  transform:translateY(-5px);
+  box-shadow:var(--shadow-hud);
+}
+
+/* Header Navbar - Distinct Developer HUD */
+.hdr{position:sticky;top:0;z-index:120;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.hdr-inner{width:100%;max-width:1240px;margin:0 auto;padding:12px clamp(18px,5vw,70px);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:12px;transition:transform 0.2s ease}
+.logo:hover{transform:scale(1.02)}
+.logo .chip{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg, #0284c7, #10b981);
+  display:grid;place-items:center;
+  color:#fff;font-family:'JetBrains Mono',monospace;font-weight:900;font-size:18px;
+  box-shadow:0 4px 16px var(--primary-glow);
+  border:1px solid rgba(255,255,255,0.2);
+  flex-shrink:0;
+}
+.navlinks{display:flex;align-items:center;gap:6px}
+.navlink{display:inline-flex;align-items:center;padding:8px 14px;border-radius:10px;font-size:14px;font-weight:600;color:var(--text-muted);transition:all 0.25s ease;position:relative}
+.navlink:hover{color:var(--text);background:var(--surface-hover)}
+.navlink.active{color:var(--primary);background:rgba(56,189,248,0.1);font-weight:700}
+
+.iconbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;color:var(--text-muted);transition:all 0.25s ease;flex-shrink:0}
+.iconbtn:hover{color:var(--text);border-color:var(--border-strong);transform:scale(1.06)}
+
+/* Action Buttons & Ripple Feel */
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:12px;background:linear-gradient(135deg, #0284c7 0%, #059669 100%);color:#fff !important;font-weight:700;font-size:14.5px;box-shadow:0 6px 22px var(--primary-glow);transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);border:none;white-space:nowrap;cursor:pointer;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 28px var(--primary-glow);filter:brightness(1.1)}
+.btn-primary:active{transform:translateY(0) scale(0.98)}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-weight:600;font-size:14.5px;transition:all 0.25s ease;white-space:nowrap}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px);background:var(--surface-hover)}
+.btn-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:12px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:var(--accent);font-weight:600;font-size:14.5px;transition:all 0.25s ease;white-space:nowrap}
+.btn-whatsapp:hover{background:var(--accent);color:#fff !important;transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+
+/* Mobile Menu & Drawer */
+.hamburger{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
+.hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:0.3s}
+.mobile-drawer{display:none;position:fixed;top:64px;left:0;right:0;background:var(--surface-solid);border-bottom:1px solid var(--border);padding:18px clamp(18px,5vw,70px);z-index:115;box-shadow:var(--shadow-hud);transition:all 0.3s ease}
+.mobile-drawer.open{display:flex;flex-direction:column;gap:10px}
+.mobile-navlink{padding:12px 14px;font-size:15px;font-weight:600;color:var(--text);border-radius:10px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background 0.2s}
+.mobile-navlink:hover,.mobile-navlink.active{background:rgba(56,189,248,0.12);color:var(--primary);border-color:var(--primary)}
+
+/* Hero Developer Card & Photo Frame */
+.hero-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:clamp(32px,5vw,64px);align-items:center}
+.status-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 14px;border-radius:999px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.08);font-size:13px;font-weight:600;color:var(--accent)}
+.hero-photo-hud{position:relative;border-radius:26px;border:1px solid var(--border-strong);background:var(--surface);padding:14px;backdrop-filter:blur(18px);box-shadow:var(--shadow-hud);transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)}
+.hero-photo-hud:hover{transform:translateY(-4px)}
+.hero-photo-wrap{position:relative;aspect-ratio:1/1;max-height:360px;border-radius:20px;overflow:hidden;background:var(--bg-subtle);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.08)}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;transition:transform 0.5s ease}
+.hero-photo-hud:hover .hero-photo-wrap img{transform:scale(1.03)}
+
+/* Animated Counters */
+.counter-val{font-weight:900;font-size:22px;font-family:'Outfit',sans-serif;display:inline-block}
+
+/* Skill Tags */
+.chip-tag{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);background:var(--surface-hover);border:1px solid var(--border);transition:all 0.22s ease}
+.chip-tag:hover{color:var(--text);border-color:var(--primary);background:rgba(56,189,248,0.12);transform:translateY(-2px)}
+.chip-sm{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--text-muted);background:var(--surface-hover);border:1px solid var(--border)}
+
+/* NDA & IP Badges */
+.badge-nda{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;font-size:11.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;background:rgba(245,158,11,0.12);color:var(--amber);border:1px solid rgba(245,158,11,0.35)}
+.badge-oss{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;font-size:11.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;background:rgba(16,185,129,0.12);color:var(--accent);border:1px solid rgba(16,185,129,0.35)}
+
+/* Interactive C Driver Lab Terminal */
+.terminal-container{background:#070a13;border:1px solid #1e293b;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-hud);transition:border-color 0.3s ease}
+.terminal-container:hover{border-color:rgba(56,189,248,0.35)}
+.terminal-header{display:flex;align-items:center;justify-content:space-between;background:#04070e;padding:12px 18px;border-bottom:1px solid #1e293b;flex-wrap:wrap;gap:10px}
+.terminal-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.terminal-tab{padding:8px 14px;border-radius:8px;font-size:13px;font-family:'JetBrains Mono',monospace;color:#94a3b8;background:transparent;border:1px solid transparent;transition:all 0.2s ease;cursor:pointer}
+.terminal-tab.active{background:#1e293b;color:#38bdf8;border-color:rgba(56,189,248,0.35);font-weight:600}
+.terminal-tab:hover:not(.active){color:#f8fafc;background:rgba(255,255,255,0.05)}
+.terminal-body{padding:22px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;color:#e2e8f0;transition:opacity 0.25s ease}
+.terminal-body pre{margin:0}
+
+/* Syntax Highlighting Tokens */
+.token-kw{color:#f43f5e;font-weight:600}
+.token-fn{color:#38bdf8}
+.token-type{color:#a855f7}
+.token-str{color:#10b981}
+.token-num{color:#f59e0b}
+.token-cm{color:#64748b;font-style:italic}
+
+/* Filter Buttons */
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filter-btn{padding:10px 18px;min-height:44px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--text-muted);background:var(--surface);border:1px solid var(--border);transition:all 0.22s ease;cursor:pointer}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 14px var(--primary-glow)}
+.filter-btn:hover:not(.active){color:var(--text);border-color:var(--border-strong);background:var(--surface-hover);transform:translateY(-1px)}
+
+/* Form Controls & Alerts */
+.field-label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:7px}
+.field{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--border);background:var(--surface-hover);color:var(--text);font-size:14.5px;outline:none;transition:border-color 0.2s, box-shadow 0.2s}
+.field:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(56,189,248,0.15)}
+
+/* Floating HUD Quick Bar */
+.floating-hud{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;background:color-mix(in srgb,var(--surface-solid) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border-strong);border-radius:999px;padding:6px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-hud);transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1)}
+
+/* 60 FPS Scroll Reveal Animations */
+.reveal-item{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-item.is-revealed{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accessibility: Respect Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-item{
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .scroll-progress-bar{
+    display: none !important;
+  }
+}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .about-grid,.contact-grid{grid-template-columns:1fr !important}
+  .desk-nav{display:none}
+  .hamburger{display:flex}
+  .floating-hud{width:92%;justify-content:space-around;padding:8px 12px}
+  .floating-hide-mobile{display:none}
+  .hdr-resume-btn{display:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<!-- Header Navbar -->
+<header class="hdr">
+  <div class="scroll-progress-bar" id="scrollProgress"></div>
+  <div class="hdr-inner">
+    <a href="#home" class="logo" aria-label="Sherifred Singh Homepage">
+      <div class="chip">S</div>
+      <div style="display:flex;flex-direction:column">
+        <span style="font-weight:800;font-size:15px;color:var(--text);line-height:1.2">S. Sherifred Singh</span>
+        <span style="font-size:11.5px;color:var(--text-dim);font-weight:600">Embedded Firmware Engineer</span>
+      </div>
+    </a>
+    <nav class="navlinks desk-nav" aria-label="Main Navigation">
+      <a href="#about" class="navlink" data-nav="about">About</a>
+      <a href="#skills" class="navlink" data-nav="skills">Skills</a>
+      <a href="#code-lab" class="navlink" data-nav="code-lab">Driver Lab</a>
+      <a href="#projects" class="navlink" data-nav="projects">Case Studies</a>
+      <a href="#experience" class="navlink" data-nav="experience">Experience</a>
+      <a href="#education" class="navlink" data-nav="education">Education</a>
+      <a href="#contact" class="navlink" data-nav="contact">Contact</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button id="themeToggle" class="iconbtn" aria-label="Toggle colour theme">
+        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="S_Sherifred_Singh_Resume.pdf" download="S_Sherifred_Singh_Resume.pdf" class="btn-primary hdr-resume-btn" style="padding:8px 18px;font-size:13.5px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Resume PDF
+      </a>
+      <button class="hamburger" id="menuBtn" aria-label="Toggle Navigation Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#about" class="mobile-navlink" data-nav="about" onclick="toggleMenu()">
+    <span>01 · Engineering Profile</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#skills" class="mobile-navlink" data-nav="skills" onclick="toggleMenu()">
+    <span>02 · Hardware & Protocol Matrix</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#code-lab" class="mobile-navlink" data-nav="code-lab" onclick="toggleMenu()">
+    <span>03 · Interactive Driver Lab</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#projects" class="mobile-navlink" data-nav="projects" onclick="toggleMenu()">
+    <span>04 · Industrial Case Studies</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#experience" class="mobile-navlink" data-nav="experience" onclick="toggleMenu()">
+    <span>05 · Career Milestones</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#education" class="mobile-navlink" data-nav="education" onclick="toggleMenu()">
+    <span>06 · Education & Degrees</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <a href="#contact" class="mobile-navlink" data-nav="contact" onclick="toggleMenu()">
+    <span>07 · Contact Desk</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+  <div style="padding-top:8px">
+    <a href="S_Sherifred_Singh_Resume.pdf" download="S_Sherifred_Singh_Resume.pdf" class="btn-primary" style="width:100%;justify-content:center;padding:12px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Resume (PDF)
+    </a>
+  </div>
+</div>
+
+<main style="padding-bottom:100px">
+
+  <!-- HERO SECTION -->
+  <section id="home" class="section" style="padding-top:clamp(45px,7vh,85px)">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="reveal-item">
+          <div class="status-badge">
+            <span class="pulse-dot" style="background:var(--accent);box-shadow:0 0 8px var(--accent)"></span> Serving Notice (15–30 Days Availability) · Coimbatore (IST / UTC+5:30)
+          </div>
+          <h1 style="font-size:clamp(32px,4.8vw,56px);line-height:1.15;margin-top:16px">
+            I architect deterministic <span class="grad-text">Bare-Metal Firmware</span> & Low-Level Drivers.
+          </h1>
+          <p class="lead" style="margin-top:20px;max-width:580px">
+            Embedded Firmware Engineer with <strong>6.5+ years industry experience</strong> (4.5+ years low-level Embedded C firmware development & 2 years hands-on PCB hardware validation). Specialized in PIC18, STM32, bare-metal peripheral drivers, interrupt critical sections, and power-loss data preservation.
+          </p>
+          <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:12px">
+            <a href="#code-lab" class="btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Explore Driver Lab
+            </a>
+            <a href="S_Sherifred_Singh_Resume.pdf" download="S_Sherifred_Singh_Resume.pdf" class="btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download Resume (PDF)
+            </a>
+            <a href="https://wa.me/917904919946?text=Hi%20Sherifred,%20we%20reviewed%20your%20embedded%20firmware%20portfolio" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.77 14.07c-.24.67-1.39 1.28-1.92 1.33-.51.05-1.15.08-3.75-.98-2.22-.91-3.66-3.16-3.77-3.31-.11-.15-.9-1.2-0.9-2.29 0-1.09.57-1.63.78-1.85.2-.23.45-.29.6-.29.15 0 .3 0 .43.01.14.01.32-.05.5.39.18.44.62 1.52.68 1.63.06.11.1.24.02.39-.08.15-.12.24-.24.38-.12.14-.25.31-.36.42-.12.12-.24.25-.1.49.14.24.63 1.04 1.35 1.68.93.83 1.71 1.09 1.95 1.21.24.12.38.1.52-.06.14-.16.6-0.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.18 1.25z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+          <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-sm mono">Embedded C</span>
+            <span class="chip-sm mono">PIC18F46K22</span>
+            <span class="chip-sm mono">ARM Cortex-M3</span>
+            <span class="chip-sm mono">ESP32</span>
+            <span class="chip-sm mono">UART / SPI / I2C</span>
+            <span class="chip-sm mono">FreeRTOS</span>
+            <span class="chip-sm mono">DSO Debugging</span>
+          </div>
+        </div>
+
+        <!-- PROFILE PHOTO HUD FRAME WITH ANIMATED COUNTERS -->
+        <div class="reveal-item" style="justify-self:center;width:100%;max-width:380px">
+          <div class="hero-photo-hud">
+            <div class="hero-photo-wrap">
+              <img src="images/sherifred_singh.jpg" onerror="this.onerror=null;this.src='data:image/jpeg;base64,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';" alt="S. Sherifred Singh · Embedded Firmware Engineer" loading="eager">
+            </div>
+            <div style="margin-top:14px;padding:12px;background:var(--surface-hover);border-radius:14px;display:flex;justify-content:space-around;text-align:center;border:1px solid var(--border)">
+              <div>
+                <div class="counter-val" style="color:var(--accent)" data-target="6.5" data-suffix="+">6.5+</div>
+                <div style="font-size:11.5px;color:var(--text-dim);font-weight:600">Yrs Total Exp</div>
+              </div>
+              <div style="width:1px;background:var(--border)"></div>
+              <div>
+                <div class="counter-val" style="color:var(--primary)" data-target="4.5" data-suffix="+">4.5+</div>
+                <div style="font-size:11.5px;color:var(--text-dim);font-weight:600">Yrs Firmware</div>
+              </div>
+              <div style="width:1px;background:var(--border)"></div>
+              <div>
+                <div class="counter-val" style="color:var(--violet)" data-target="100" data-suffix="%">100%</div>
+                <div style="font-size:11.5px;color:var(--text-dim);font-weight:600">Data Integrity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT ME SECTION -->
+  <section id="about" class="section">
+    <div class="wrap">
+      <div class="about-grid" style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:48px;align-items:start">
+        <div class="reveal-item">
+          <div class="eyebrow"><span class="pulse-dot"></span> 01 · Engineering Profile</div>
+          <h2 class="h2">Hardware fails. Firmware must recover.</h2>
+          <p class="lead" style="margin-top:18px">
+            I am an <strong>Embedded Firmware Engineer</strong> based in Coimbatore, Tamil Nadu. My engineering background bridges <strong>4.5+ years of dedicated low-level Embedded C firmware development</strong> at NK Automation with <strong>2 years of hands-on PCB fault analysis and hardware validation</strong> at Akarsh Technologies.
+          </p>
+          <p class="lead" style="margin-top:14px">
+            Having spent two years desoldering components, tracing PCB schematics, and probing signal lines with digital storage oscilloscopes (DSO) before writing firmware, I bring a unique <strong>hardware-first perspective</strong> to code design. I write firmware that anticipates power glitches, 24V industrial noise, and bus timing constraints.
+          </p>
+          <p class="lead" style="margin-top:14px">
+            At <strong>NK Automation</strong>, I architect production firmware for PIC18, STM32, and ESP32 microcontrollers powering industrial textile monitors, digital temperature controllers, and Automatic Mains Failure (AMF) generator units. I specialize in register-level driver design (UART, SPI, I2C), non-volatile data logging (EEPROM/RTC), and deterministic Finite State Machines (FSM).
+          </p>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:28px">
+          <h3 style="font-size:18px;font-weight:800;margin-bottom:18px;color:var(--text)">Candidate Spec Sheet</h3>
+          <div style="display:flex;flex-direction:column;gap:13px;font-size:14px">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Current Location</span>
+              <span style="font-weight:600">Coimbatore, India (IST / UTC+5:30)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Target Role</span>
+              <span style="font-weight:700;color:var(--primary)">Embedded Firmware Engineer</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Current Employer</span>
+              <span style="font-weight:600">NK Automation (Jan 2022 &ndash; Present)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Notice Period</span>
+              <span style="font-weight:700;color:var(--accent)">15–30 Days Availability</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Relocation</span>
+              <span style="font-weight:600">Open to Relocation / Hybrid</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:9px">
+              <span style="color:var(--text-dim)">Education</span>
+              <span style="font-weight:600;text-align:right">B.E. EEE — 72% (CIT)<br><small style="color:var(--text-dim)">Diploma ECE — 72% (Anna Univ)</small></span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="color:var(--text-dim)">Direct Mobile</span>
+              <span style="font-weight:700;color:var(--primary)"><a href="tel:+917904919946">+91-7904919946</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS SECTION -->
+  <section id="skills" class="section">
+    <div class="wrap">
+      <div class="head reveal-item">
+        <div class="eyebrow"><span class="pulse-dot"></span> 02 · Technical Capabilities</div>
+        <h2 class="h2">Hardware & Firmware Capability Matrix</h2>
+        <p class="lead">Categorized overview of low-level programming languages, microcontrollers, communication protocols, development tools, and hardware validation equipment.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+        
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Languages & Standards</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">Embedded C (Primary)</span>
+            <span class="chip-tag">C</span>
+            <span class="chip-tag">Python (Basic)</span>
+            <span class="chip-tag">MISRA-C:2012 Rules</span>
+            <span class="chip-tag">Bitwise Masking</span>
+          </div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Microcontrollers & Cores</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">PIC18F46K22</span>
+            <span class="chip-tag">PIC16F887</span>
+            <span class="chip-tag">ARM Cortex-M3 (STM32)</span>
+            <span class="chip-tag">ESP32</span>
+            <span class="chip-tag">8051</span>
+          </div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--violet);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Communication Protocols</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">UART / USART</span>
+            <span class="chip-tag">SPI (Mode 0/1/3)</span>
+            <span class="chip-tag">I2C (Standard/Fast)</span>
+            <span class="chip-tag">RS-485 / MODBUS RTU</span>
+            <span class="chip-tag">CAN (Conceptual)</span>
+          </div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Peripherals & External ICs</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">AT24C32 EEPROM</span>
+            <span class="chip-tag">DS3231 / DS1307 RTC</span>
+            <span class="chip-tag">MAX31865 (PT100 SPI)</span>
+            <span class="chip-tag">MAX6675 Thermocouple</span>
+            <span class="chip-tag">T6963C GLCD / HD44780</span>
+            <span class="chip-tag">DMA & Timers</span>
+          </div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Hardware Test & Debugging</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">Digital Oscilloscope (DSO)</span>
+            <span class="chip-tag">Logic Analyzer</span>
+            <span class="chip-tag">Digital Multimeter</span>
+            <span class="chip-tag">PCB Fault Isolation</span>
+            <span class="chip-tag">SMD Rework & Soldering</span>
+            <span class="chip-tag">Schematic Tracing</span>
+          </div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:24px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Firmware Architecture</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-tag">Bare-Metal Drivers</span>
+            <span class="chip-tag">Interrupt Critical Sections</span>
+            <span class="chip-tag">Finite State Machines (FSM)</span>
+            <span class="chip-tag">Watchdog & Brown-Out (BOR)</span>
+            <span class="chip-tag">FreeRTOS Tasks & Mutex</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE CODE & DRIVER LAB -->
+  <section id="code-lab" class="section">
+    <div class="wrap">
+      <div class="head reveal-item">
+        <div class="eyebrow"><span class="pulse-dot"></span> 03 · Driver Code Laboratory</div>
+        <h2 class="h2">Production Register-Level Driver Snippets</h2>
+        <p class="lead">Inspect real-world register-level driver implementations and interrupt service routines engineered for high-noise industrial factory environments.</p>
+      </div>
+
+      <div class="terminal-container reveal-item" role="region" aria-label="C Source Code Viewer">
+        <div class="terminal-header">
+          <div class="terminal-tabs">
+            <button class="terminal-tab active" onclick="switchTab(0)">atomic_eeprom_write.c</button>
+            <button class="terminal-tab" onclick="switchTab(1)">timer_pulse_capture.c</button>
+            <button class="terminal-tab" onclick="switchTab(2)">rms_voltage_sampling.c</button>
+            <button class="terminal-tab" onclick="switchTab(3)">freertos_telemetry_queue.c</button>
+          </div>
+          <button class="btn-ghost" onclick="copyActiveCode()" style="padding:8px 14px;font-size:12.5px;gap:6px" id="copyBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Code
+          </button>
+        </div>
+
+        <div class="terminal-body" id="terminalBody">
+          <pre id="codeDisplay"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS SECTION -->
+  <section id="projects" class="section">
+    <div class="wrap">
+      <div class="head reveal-item">
+        <div class="eyebrow"><span class="pulse-dot"></span> 04 · Featured Systems</div>
+        <h2 class="h2">Industrial Deployments & Engineering Case Studies</h2>
+        <p class="lead">Detailed breakdown of custom microcontroller hardware, telemetry logging systems, and power electronics deployed across manufacturing plants.</p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs reveal-item">
+        <button class="filter-btn active" onclick="filterProjects('all')">All Systems (4)</button>
+        <button class="filter-btn" onclick="filterProjects('textile')">Textile Telemetry</button>
+        <button class="filter-btn" onclick="filterProjects('process')">Process Instrumentation</button>
+        <button class="filter-btn" onclick="filterProjects('power')">Power Electronics</button>
+        <button class="filter-btn" onclick="filterProjects('oss')">Open-Source Reference</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:28px" id="projectsContainer">
+        
+        <!-- Project 1: Powerloom -->
+        <div class="hud-card lift project-card reveal-item" data-cat="textile" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:18px">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                <span class="badge-nda">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Commercial Production IP
+                </span>
+                <span class="chip-sm mono">PIC18F46K22</span>
+              </div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">Multi-Channel Powerloom Production Telemetry Monitor</h3>
+              <div style="font-size:14.5px;color:var(--primary);font-weight:600;margin-top:3px">Firmware Engineered at NK Automation · Textile Manufacturing Deployment</div>
+            </div>
+            <span class="chip-tag" style="color:var(--accent);font-weight:600">1,000+ Hrs Factory Tested</span>
+          </div>
+
+          <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:16px">
+            High-speed production counter and operator wage calculation unit monitoring <strong>24 loom channels concurrently</strong> over 24V optoisolated input lines. Engineered atomic I2C non-volatile EEPROM transactions with brown-out detection to preserve shift picks, meters, and efficiency metrics during sudden mill power outages.
+          </p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px">
+            <div style="background:var(--surface-hover);padding:16px;border-radius:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:700;color:var(--rose);margin-bottom:4px;display:flex;align-items:center;gap:6px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Industrial Bottleneck
+              </div>
+              <div style="font-size:13px;color:var(--text-muted)">Mill power sags during non-atomic I2C EEPROM writes caused shift count memory corruption and operator wage calculation loss.</div>
+            </div>
+            <div style="background:var(--surface-hover);padding:16px;border-radius:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;display:flex;align-items:center;gap:6px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Firmware Solution
+              </div>
+              <div style="font-size:13px;color:var(--text-muted)">Implemented interrupt-masked atomic memory transactions with brown-out detection and DS3231 RTC shift timestamping.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Compressor -->
+        <div class="hud-card lift project-card reveal-item" data-cat="process" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:18px">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                <span class="badge-nda">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Commercial Production IP
+                </span>
+                <span class="chip-sm mono">PIC18 MCU</span>
+              </div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">Industrial Compressor Multi-Sensor Thermal Monitor</h3>
+              <div style="font-size:14.5px;color:var(--primary);font-weight:600;margin-top:3px">Firmware Engineered at NK Automation · Process Temperature Instrumentation</div>
+            </div>
+            <span class="chip-tag" style="color:var(--primary);font-weight:600">3-Stage Trip Logic</span>
+          </div>
+
+          <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:16px">
+            Multi-stage thermal controller monitoring compressor delivery temperatures, oil sumps, and ambient loops. Integrated <strong>MAX31865 SPI PT100 RTD</strong> and <strong>MAX6675 Thermocouple</strong> stages with parameterized hysteresis and anti-short-cycle delay timers.
+          </p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-sm">MAX31865 (SPI RTD)</span>
+            <span class="chip-sm">MAX6675 (K-Type)</span>
+            <span class="chip-sm">Optoisolated Relays</span>
+            <span class="chip-sm">Hysteresis FSM</span>
+          </div>
+        </div>
+
+        <!-- Project 3: Stabilizer & AMF -->
+        <div class="hud-card lift project-card reveal-item" data-cat="power" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:18px">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                <span class="badge-nda">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Commercial Production IP
+                </span>
+                <span class="chip-sm mono">Microcontroller Core</span>
+              </div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">AC Voltage Stabilizer & AMF Generator Control Board</h3>
+              <div style="font-size:14.5px;color:var(--primary);font-weight:600;margin-top:3px">Firmware Engineered at NK Automation · Power Electronics Automation</div>
+            </div>
+            <span class="chip-tag" style="color:var(--accent);font-weight:600">~40% Crank Reduction</span>
+          </div>
+
+          <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:16px">
+            Line regulation and generator automation system executing <strong>sub-cycle true RMS voltage sampling</strong> and zero-crossing synchronized tap transitions (&lt;50µs delay) to eliminate contact arcing. Multi-state AMF FSM reduced false generator cranking attempts by ~40%.
+          </p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-sm">True RMS Sampling</span>
+            <span class="chip-sm">Zero-Crossing Detection</span>
+            <span class="chip-sm">AMF Generator FSM</span>
+            <span class="chip-sm">Over/Under Voltage Trip</span>
+          </div>
+        </div>
+
+        <!-- Project 4: Open Source -->
+        <div class="hud-card lift project-card reveal-item" data-cat="oss" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:18px">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                <span class="badge-oss">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+                  Open-Source Reference
+                </span>
+                <span class="chip-sm mono">STM32 / FreeRTOS / C</span>
+              </div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">Modular Firmware Architecture & Circular FIFO Library</h3>
+              <div style="font-size:14.5px;color:var(--primary);font-weight:600;margin-top:3px">Personal Open-Source Engineering Reference</div>
+            </div>
+            <a href="https://github.com/Sherifred123" target="_blank" rel="noopener noreferrer" class="btn-ghost" style="padding:6px 14px;font-size:12.5px;gap:6px">
+              <span>GitHub Repos</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </div>
+
+          <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:16px">
+            Clean-room reference implementation of lock-free circular FIFO ring buffers, event-driven state machines, and FreeRTOS task synchronization queues for ARM Cortex-M and PIC microcontrollers.
+          </p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span class="chip-sm">Lock-Free FIFO</span>
+            <span class="chip-sm">FreeRTOS Mutex & Queues</span>
+            <span class="chip-sm">MISRA-C Rules</span>
+            <span class="chip-sm">Non-Blocking UART</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE SECTION -->
+  <section id="experience" class="section">
+    <div class="wrap">
+      <div class="head reveal-item">
+        <div class="eyebrow"><span class="pulse-dot"></span> 05 · Career Milestones</div>
+        <h2 class="h2">Professional Experience & Engineering Impact</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:24px">
+        
+        <!-- NK Automation -->
+        <div class="hud-card lift reveal-item" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:20px">
+            <div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">Embedded Software Developer</h3>
+              <div style="font-size:15px;color:var(--primary);font-weight:600;margin-top:2px">NK Automation · Coimbatore, India</div>
+            </div>
+            <span class="chip-tag" style="background:var(--surface-hover);color:var(--accent);font-weight:700">Jan 2022 – Present (4.5+ Years)</span>
+          </div>
+          <ul style="display:flex;flex-direction:column;gap:12px;font-size:14.5px;color:var(--text-muted)">
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Architected and deployed production Embedded C firmware for <strong>PIC18 and STM32 microcontrollers</strong> powering industrial automation and telemetry monitors.
+            </li>
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Developed low-level non-blocking peripheral drivers for <strong>UART, SPI, I2C, ADC, Timers, PWM, and T6963C GLCD</strong> controllers.
+            </li>
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Engineered interrupt-safe critical sections for I2C EEPROM writes, eliminating shift-transition memory corruption under severe power sags.
+            </li>
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Executed hands-on board bring-up, hardware-software integration, and real-time signal debugging using digital storage oscilloscopes (DSO).
+            </li>
+          </ul>
+        </div>
+
+        <!-- Akarsh Technologies -->
+        <div class="hud-card lift reveal-item" style="padding:32px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:20px">
+            <div>
+              <h3 style="font-size:22px;font-weight:800;color:var(--text)">Testing Engineer</h3>
+              <div style="font-size:15px;color:var(--primary);font-weight:600;margin-top:2px">Akarsh Technologies · Coimbatore, India</div>
+            </div>
+            <span class="chip-tag" style="background:var(--surface-hover);color:var(--text-muted);font-weight:700">Jun 2018 – Jun 2020 (2.0 Years)</span>
+          </div>
+          <ul style="display:flex;flex-direction:column;gap:12px;font-size:14.5px;color:var(--text-muted)">
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Diagnosed and repaired complex PCB failures down to component level for textile and industrial automation control boards.
+            </li>
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Conducted firmware functional validation and hardware stress testing to isolate electrical defects and verify signal timings.
+            </li>
+            <li style="position:relative;padding-left:20px">
+              <span style="position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary)"></span>
+              Performed precision SMD and through-hole rework, component replacement, and prototype board assembly.
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION SECTION -->
+  <section id="education" class="section">
+    <div class="wrap">
+      <div class="head reveal-item">
+        <div class="eyebrow"><span class="pulse-dot"></span> 06 · Education & Degrees</div>
+        <h2 class="h2">Academic Credentials & Qualifications</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+        
+        <div class="hud-card lift reveal-item" style="padding:28px">
+          <div style="font-size:12px;font-weight:800;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace">Bachelor of Engineering (B.E.)</div>
+          <h3 style="font-size:18px;font-weight:800;margin-top:6px;color:var(--text)">Electrical & Electronics Engineering (EEE) — 72%</h3>
+          <div style="font-size:14px;color:var(--primary);font-weight:600;margin-top:2px">Coimbatore Institute of Technology (CIT), Coimbatore</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-top:8px">2021 – 2024 · <strong>Grade: 72% (Part-Time)</strong></div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:28px">
+          <div style="font-size:12px;font-weight:800;color:var(--primary);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace">Diploma in Engineering</div>
+          <h3 style="font-size:18px;font-weight:800;margin-top:6px;color:var(--text)">Electronics & Communication Engineering (ECE) — 72%</h3>
+          <div style="font-size:14px;color:var(--primary);font-weight:600;margin-top:2px">Government Polytechnic College, Anna University, Coimbatore</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-top:8px">2015 – 2018 · <strong>Grade: 72%</strong></div>
+        </div>
+
+        <div class="hud-card lift reveal-item" style="padding:28px">
+          <div style="font-size:12px;font-weight:800;color:var(--violet);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace">Professional Certification</div>
+          <h3 style="font-size:18px;font-weight:800;margin-top:6px;color:var(--text)">Diploma in Embedded Systems</h3>
+          <div style="font-size:14px;color:var(--primary);font-weight:600;margin-top:2px">Manfree Technologies, Coimbatore</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-top:8px">Jun 2020 – Jan 2021 · ARM Cortex-M (STM32), ESP32, PIC MCU, C/C++</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <div class="contact-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+        <div class="reveal-item">
+          <div class="eyebrow"><span class="pulse-dot"></span> 07 · Direct Connection</div>
+          <h2 class="h2">Let's build reliable embedded systems.</h2>
+          <p class="lead" style="margin-top:16px">
+            I am currently serving my notice period (<strong>15–30 Days Availability</strong>) and actively interviewing for Embedded Software / Firmware Engineer positions. Reach out directly via WhatsApp, email, or phone!
+          </p>
+          
+          <div style="margin-top:28px;display:flex;flex-direction:column;gap:14px">
+            <a href="https://wa.me/917904919946?text=Hi%20Sherifred,%20we%20reviewed%20your%20embedded%20firmware%20portfolio" target="_blank" rel="noopener noreferrer" class="hud-card lift" style="padding:16px 20px;display:flex;align-items:center;gap:14px;border-color:rgba(16,185,129,0.35)">
+              <div style="width:42px;height:42px;border-radius:12px;background:rgba(16,185,129,0.15);display:grid;place-items:center;color:var(--accent);flex-shrink:0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.77 14.07c-.24.67-1.39 1.28-1.92 1.33-.51.05-1.15.08-3.75-.98-2.22-.91-3.66-3.16-3.77-3.31-.11-.15-.9-1.2-0.9-2.29 0-1.09.57-1.63.78-1.85.2-.23.45-.29.6-.29.15 0 .3 0 .43.01.14.01.32-.05.5.39.18.44.62 1.52.68 1.63.06.11.1.24.02.39-.08.15-.12.24-.24.38-.12.14-.25.31-.36.42-.12.12-.24.25-.1.49.14.24.63 1.04 1.35 1.68.93.83 1.71 1.09 1.95 1.21.24.12.38.1.52-.06.14-.16.6-0.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.18 1.25z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--accent);font-weight:700">WhatsApp Desk (Fastest Response)</div>
+                <div style="font-weight:800;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif">+91-7904919946</div>
+              </div>
+            </a>
+
+            <a href="mailto:ssherifred@gmail.com?subject=Embedded%20Firmware%20Opportunity" class="hud-card lift" style="padding:16px 20px;display:flex;align-items:center;gap:14px">
+              <div style="width:42px;height:42px;border-radius:12px;background:var(--surface-hover);display:grid;place-items:center;color:var(--primary);flex-shrink:0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-dim)">Direct Email</div>
+                <div style="font-weight:800;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif">ssherifred@gmail.com</div>
+              </div>
+            </a>
+
+            <a href="tel:+917904919946" class="hud-card lift" style="padding:16px 20px;display:flex;align-items:center;gap:14px">
+              <div style="width:42px;height:42px;border-radius:12px;background:var(--surface-hover);display:grid;place-items:center;color:var(--violet);flex-shrink:0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-dim)">Direct Phone Call</div>
+                <div style="font-weight:800;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif">+91-7904919946</div>
+              </div>
+            </a>
+
+            <a href="https://www.linkedin.com/in/sherifredsing" target="_blank" rel="noopener noreferrer" class="hud-card lift" style="padding:16px 20px;display:flex;align-items:center;gap:14px">
+              <div style="width:42px;height:42px;border-radius:12px;background:rgba(2,132,199,0.15);display:grid;place-items:center;color:#0284c7;flex-shrink:0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.78-1.75-1.75s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.75-1.75 1.75m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-dim)">LinkedIn Profile</div>
+                <div style="font-weight:800;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif">linkedin.com/in/sherifredsing</div>
+              </div>
+            </a>
+
+            <a href="https://github.com/Sherifred123" target="_blank" rel="noopener noreferrer" class="hud-card lift" style="padding:16px 20px;display:flex;align-items:center;gap:14px">
+              <div style="width:42px;height:42px;border-radius:12px;background:var(--surface-hover);display:grid;place-items:center;color:var(--text);flex-shrink:0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--text-dim)">GitHub Repositories</div>
+                <div style="font-weight:800;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif">github.com/Sherifred123</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- CONTACT FORM (Guaranteed Direct FormSubmit Transmission) -->
+        <form id="contactForm" action="https://formsubmit.co/ssherifred@gmail.com" method="POST" target="_blank" class="hud-card lift reveal-item" style="padding:32px;display:flex;flex-direction:column;gap:16px">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_subject" value="[Portfolio Inquiry] Message for S. Sherifred Singh">
+          
+          <h3 style="font-size:19px;font-weight:800;margin-bottom:4px">Send a Direct Message</h3>
+          <div>
+            <label class="field-label" for="senderName">Your Name *</label>
+            <input type="text" id="senderName" name="name" required class="field" placeholder="e.g. Hiring Manager / Recruiter Name">
+          </div>
+          <div>
+            <label class="field-label" for="senderEmail">Your Email *</label>
+            <input type="email" id="senderEmail" name="email" required class="field" placeholder="e.g. hr@company.com">
+          </div>
+          <div>
+            <label class="field-label" for="senderCompany">Company / Organization (Optional)</label>
+            <input type="text" id="senderCompany" name="company" class="field" placeholder="e.g. Embedded Technologies Pvt Ltd">
+          </div>
+          <div>
+            <label class="field-label" for="senderMessage">Message / Role Details *</label>
+            <textarea id="senderMessage" name="message" rows="4" required class="field" placeholder="Hi Sherifred, we have an opening for Embedded Firmware Engineer..."></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-primary" style="justify-content:center;padding:14px">
+            <span>Send Message</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Floating HUD Quick Bar -->
+<div class="floating-hud">
+  <a href="https://wa.me/917904919946?text=Hi%20Sherifred,%20we%20reviewed%20your%20embedded%20firmware%20portfolio" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:6px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.77 14.07c-.24.67-1.39 1.28-1.92 1.33-.51.05-1.15.08-3.75-.98-2.22-.91-3.66-3.16-3.77-3.31-.11-.15-.9-1.2-0.9-2.29 0-1.09.57-1.63.78-1.85.2-.23.45-.29.6-.29.15 0 .3 0 .43.01.14.01.32-.05.5.39.18.44.62 1.52.68 1.63.06.11.1.24.02.39-.08.15-.12.24-.24.38-.12.14-.25.31-.36.42-.12.12-.24.25-.1.49.14.24.63 1.04 1.35 1.68.93.83 1.71 1.09 1.95 1.21.24.12.38.1.52-.06.14-.16.6-0.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.18 1.25z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+  <span style="color:var(--border-strong)">|</span>
+  <a href="tel:+917904919946" style="font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:6px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <span>Call</span>
+  </a>
+  <span style="color:var(--border-strong)" class="floating-hide-mobile">|</span>
+  <a href="S_Sherifred_Singh_Resume.pdf" download="S_Sherifred_Singh_Resume.pdf" class="floating-hide-mobile" style="color:var(--primary);font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:6px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <span>Resume</span>
+  </a>
+  <span style="color:var(--border-strong)">|</span>
+  <a href="#home" style="display:flex;align-items:center;padding:2px 4px" title="Back to top" aria-label="Back to top">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </a>
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:32px 0 80px;text-align:center;color:var(--text-dim);font-size:13.5px">
+  <div class="wrap">
+    &copy; 2026 S. Sherifred Singh &bull; Personal Developer Portfolio &bull; Embedded Firmware Engineer &bull; Coimbatore, Tamil Nadu, India
+  </div>
+</footer>
+
+<script>
+// Code Snippets Data
+const codeSnippets = [
+  `<span class="token-cm">/* =========================================================================
+ * atomic_eeprom_write.c
+ * Target: PIC18F46K22 | I2C Non-Volatile Memory Transaction Routine
+ * Prevents shift production count corruption during sudden industrial brownouts.
+ * ========================================================================= */</span>
+<span class="token-kw">#include</span> <span class="token-str">&lt;xc.h&gt;</span>
+<span class="token-kw">#include</span> <span class="token-str">"i2c_driver.h"</span>
+
+<span class="token-type">uint8_t</span> <span class="token-fn">EEPROM_WriteAtomicShiftRecord</span>(<span class="token-type">uint16_t</span> mem_addr, <span class="token-type">const uint8_t</span> *p_data, <span class="token-type">uint8_t</span> len) {
+    <span class="token-type">uint8_t</span> gie_state = INTCONbits.GIE;  <span class="token-cm">// Save global interrupt state</span>
+    INTCONbits.GIE = 0;                  <span class="token-cm">// Enter Critical Section (Mask all ISRs)</span>
+    
+    <span class="token-fn">I2C_Start</span>();
+    <span class="token-kw">if</span> (!<span class="token-fn">I2C_WriteByte</span>(EEPROM_I2C_ADDR | I2C_WRITE)) {
+        <span class="token-fn">I2C_Stop</span>();
+        INTCONbits.GIE = gie_state;      <span class="token-cm">// Restore interrupts on bus error</span>
+        <span class="token-kw">return</span> 0;                        <span class="token-cm">// Bus NACK failure</span>
+    }
+    
+    <span class="token-fn">I2C_WriteByte</span>((<span class="token-type">uint8_t</span>)(mem_addr &gt;&gt; 8));   <span class="token-cm">// Word Address High</span>
+    <span class="token-fn">I2C_WriteByte</span>((<span class="token-type">uint8_t</span>)(mem_addr &amp; 0xFF)); <span class="token-cm">// Word Address Low</span>
+    
+    <span class="token-kw">for</span> (<span class="token-type">uint8_t</span> i = 0; i &lt; len; i++) {
+        <span class="token-fn">I2C_WriteByte</span>(p_data[i]);
+    }
+    <span class="token-fn">I2C_Stop</span>();
+    
+    INTCONbits.GIE = gie_state;          <span class="token-cm">// Exit Critical Section safely</span>
+    <span class="token-kw">return</span> 1;                            <span class="token-cm">// Write cycle initiated</span>
+}`,
+
+  `<span class="token-cm">/* =========================================================================
+ * timer_pulse_capture.c
+ * Target: PIC18F46K22 | High-Speed Timer0 24-Channel Loom Pulse Capture ISR
+ * Captures asynchronous pick sensor pulses with software debounce & atomic tick.
+ * ========================================================================= */</span>
+<span class="token-kw">#include</span> <span class="token-str">&lt;xc.h&gt;</span>
+<span class="token-kw">#include</span> <span class="token-str">"loom_telemetry.h"</span>
+
+<span class="token-kw">volatile</span> <span class="token-type">uint32_t</span> g_loom_pick_count[24] = {0};
+<span class="token-kw">volatile</span> <span class="token-type">uint32_t</span> g_last_valid_tick[24] = {0};
+
+<span class="token-kw">void</span> __interrupt(high_priority) <span class="token-fn">Timer0_LoomPulse_ISR</span>(<span class="token-kw">void</span>) {
+    <span class="token-kw">if</span> (INTCONbits.TMR0IF) {
+        <span class="token-type">uint32_t</span> current_time = <span class="token-fn">GetSystemTick</span>();
+        <span class="token-type">uint32_t</span> port_snapshot = <span class="token-fn">ReadOptoisolatedSensorBus</span>();
+        
+        <span class="token-kw">for</span> (<span class="token-type">uint8_t</span> ch = 0; ch &lt; 24; ch++) {
+            <span class="token-kw">if</span> (port_snapshot &amp; (1UL &lt;&lt; ch)) {
+                <span class="token-cm">// 25ms Noise Debounce Window for Mechanical Cam Contacts</span>
+                <span class="token-kw">if</span> ((current_time - g_last_valid_tick[ch]) &gt; DEBOUNCE_THRESHOLD_MS) {
+                    g_loom_pick_count[ch]++;
+                    g_last_valid_tick[ch] = current_time;
+                }
+            }
+        }
+        TMR0 = TIMER0_RELOAD_VAL;        <span class="token-cm">// Reload deterministic sampling period</span>
+        INTCONbits.TMR0IF = 0;           <span class="token-cm">// Clear Timer0 interrupt flag</span>
+    }
+}`,
+
+  `<span class="token-cm">/* =========================================================================
+ * rms_voltage_sampling.c
+ * Target: Industrial Microcontroller | True RMS AC Voltage Calculation
+ * Samples 128 points per AC 50Hz cycle with zero-crossing synchronized tap change.
+ * ========================================================================= */</span>
+<span class="token-kw">#include</span> <span class="token-str">&lt;math.h&gt;</span>
+<span class="token-kw">#include</span> <span class="token-str">"stabilizer.h"</span>
+
+<span class="token-kw">#define</span> SAMPLES_PER_CYCLE 128
+
+<span class="token-type">float</span> <span class="token-fn">CalculateTrueRMS_Voltage</span>(<span class="token-kw">void</span>) {
+    <span class="token-type">uint32_t</span> sum_squares = 0;
+    
+    <span class="token-kw">for</span> (<span class="token-type">uint16_t</span> i = 0; i &lt; SAMPLES_PER_CYCLE; i++) {
+        <span class="token-type">int16_t</span> sample = (int16_t)<span class="token-fn">ADC_ReadChannel</span>(AC_SENSE_CH) - ADC_ZERO_OFFSET;
+        sum_squares += (uint32_t)(sample * sample);
+        <span class="token-fn">Delay_Microseconds</span>(156); <span class="token-cm">// 20ms / 128 samples ≈ 156.25µs</span>
+    }
+    
+    <span class="token-type">float</span> mean_square = (<span class="token-type">float</span>)sum_squares / SAMPLES_PER_CYCLE;
+    <span class="token-type">float</span> rms_voltage = <span class="token-fn">sqrtf</span>(mean_square) * VOLTAGE_CALIBRATION_FACTOR;
+    <span class="token-kw">return</span> rms_voltage;
+}`,
+
+  `<span class="token-cm">/* =========================================================================
+ * freertos_telemetry_queue.c
+ * Target: ARM Cortex-M3 (STM32) | FreeRTOS Multi-Task Sensor Logging
+ * Thread-safe sensor acquisition and UART telemetry queue dispatch.
+ * ========================================================================= */</span>
+<span class="token-kw">#include</span> <span class="token-str">"FreeRTOS.h"</span>
+<span class="token-kw">#include</span> <span class="token-str">"task.h"</span>
+<span class="token-kw">#include</span> <span class="token-str">"queue.h"</span>
+<span class="token-kw">#include</span> <span class="token-str">"semphr.h"</span>
+
+<span class="token-kw">typedef struct</span> {
+    <span class="token-type">uint8_t</span> channel_id;
+    <span class="token-type">float</span> temperature_c;
+    <span class="token-type">uint32_t</span> timestamp;
+} SensorData_t;
+
+QueueHandle_t xTelemetryQueue;
+SemaphoreHandle_t xSPI_Mutex;
+
+<span class="token-kw">void</span> <span class="token-fn">vSensorAcquisitionTask</span>(<span class="token-kw">void</span> *pvParameters) {
+    SensorData_t sensor_packet;
+    <span class="token-kw">for</span> (;;) {
+        <span class="token-kw">if</span> (<span class="token-fn">xSemaphoreTake</span>(xSPI_Mutex, portMAX_DELAY) == pdTRUE) {
+            sensor_packet.temperature_c = <span class="token-fn">MAX31865_ReadRTD</span>();
+            <span class="token-fn">xSemaphoreGive</span>(xSPI_Mutex);
+        }
+        sensor_packet.timestamp = <span class="token-fn">xTaskGetTickCount</span>();
+        <span class="token-fn">xQueueSend</span>(xTelemetryQueue, &amp;sensor_packet, portMAX_DELAY);
+        <span class="token-fn">vTaskDelay</span>(<span class="token-fn">pdMS_TO_TICKS</span>(500));
+    }
+}`
+];
+
+let activeTabIdx = 0;
+function switchTab(idx) {
+  activeTabIdx = idx;
+  document.querySelectorAll('.terminal-tab').forEach((tab, i) => {
+    tab.classList.toggle('active', i === idx);
+  });
+  const terminalBody = document.getElementById('terminalBody');
+  const codeDisplay = document.getElementById('codeDisplay');
+  if (terminalBody) {
+    terminalBody.style.opacity = '0';
+    setTimeout(() => {
+      codeDisplay.innerHTML = codeSnippets[idx];
+      terminalBody.style.opacity = '1';
+    }, 120);
+  } else {
+    codeDisplay.innerHTML = codeSnippets[idx];
+  }
+}
+switchTab(0);
+
+function copyActiveCode() {
+  const codeText = document.getElementById('codeDisplay').innerText;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(codeText).then(onCopied).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+  function fallbackCopy() {
+    const ta = document.createElement('textarea');
+    ta.value = codeText;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    onCopied();
+  }
+  function onCopied() {
+    const btn = document.getElementById('copyBtn');
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+    btn.style.color = 'var(--accent)';
+    btn.style.borderColor = 'var(--accent)';
+    setTimeout(() => { 
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Code'; 
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  }
+}
+
+// Project Filtering with Smooth Fade
+function filterProjects(category) {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick').includes(category));
+  });
+  document.querySelectorAll('.project-card').forEach(card => {
+    if (category === 'all' || card.getAttribute('data-cat') === category) {
+      card.style.display = 'block';
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 50);
+    } else {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(10px)';
+      setTimeout(() => {
+        card.style.display = 'none';
+      }, 250);
+    }
+  });
+}
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nextTheme);
+  try { localStorage.setItem('ss-theme', nextTheme); } catch(e){}
+});
+
+// Mobile Drawer Toggle
+const menuBtn = document.getElementById('menuBtn');
+const mobileDrawer = document.getElementById('mobileDrawer');
+function toggleMenu() {
+  if (mobileDrawer) {
+    mobileDrawer.classList.toggle('open');
+  }
+}
+if (menuBtn) {
+  menuBtn.addEventListener('click', toggleMenu);
+}
+
+// Scroll-Driven Reading Progress Bar
+const progressBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) : 0;
+  if (progressBar) {
+    progressBar.style.transform = `scaleX(${scrollPercent})`;
+  }
+}, { passive: true });
+
+// Active Navigation Link Spy
+const navSections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.navlink');
+const mobileNavLinks = document.querySelectorAll('.mobile-navlink');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-nav') === id);
+      });
+      mobileNavLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-nav') === id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -65% 0px' });
+
+navSections.forEach(sec => navObserver.observe(sec));
+
+// Staggered 60 FPS Scroll-Reveal Observer
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry, idx) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-revealed');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal-item').forEach((item, index) => {
+  item.style.transitionDelay = (index % 3) * 60 + 'ms';
+  revealObserver.observe(item);
+});
+
+// Dynamic Card Spotlight Micro-Interaction
+document.querySelectorAll('.hud-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', x + 'px');
+    card.style.setProperty('--mouse-y', y + 'px');
+  });
+});
+
+// Dynamic Counter Animation
+let countersAnimated = false;
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !countersAnimated) {
+      countersAnimated = true;
+      document.querySelectorAll('.counter-val').forEach(c => {
+        const target = parseFloat(c.getAttribute('data-target'));
+        const suffix = c.getAttribute('data-suffix') || '';
+        const isDecimal = target % 1 !== 0;
+        const duration = 1400;
+        const startTime = performance.now();
+
+        function updateCounter(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOutProgress = 1 - Math.pow(1 - progress, 3);
+          const currentVal = target * easeOutProgress;
+
+          c.innerText = isDecimal ? currentVal.toFixed(1) + suffix : Math.floor(currentVal) + suffix;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            c.innerText = target + suffix;
+          }
+        }
+        requestAnimationFrame(updateCounter);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const photoHud = document.querySelector('.hero-photo-hud');
+if (photoHud) counterObserver.observe(photoHud);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nkautomation.netlify.app/sitemap.xml
