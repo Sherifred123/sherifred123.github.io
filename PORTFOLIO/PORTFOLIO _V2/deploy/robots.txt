@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sherifred123.github.io/PORTFOLIO/sitemap.xml
